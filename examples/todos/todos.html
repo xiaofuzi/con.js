@@ -1,10 +1,124 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta charset="UTF-8">
-	<title>Todo app</title>
+    <meta charset="UTF-8">
+    <title>Todo app</title>
+    <style>
+    	*{
+    		margin: 0;
+    		padding: 0;
+    	}
+    	input, button{
+    		outline: none;
+    	}
+
+		#todoApp{
+			padding-top: 50px;
+			width: 400px;
+			margin: 0 auto;
+		}
+		#todoApp .title{
+			line-height: 50px;
+			text-align: center;
+			background: #eee;
+		}
+
+		#todoApp .content .todo-form{
+			overflow: hidden;
+		}
+		#todoApp .content .todo-form input{
+			height: 40px;
+			width: 350px;
+			padding: 5px;
+			box-sizing: border-box;
+			border: 1px solid #eee;
+			border-right: 1px solid #fff;
+			float: left;
+		}
+		#todoApp .content .todo-form button{
+			height: 40px;
+			width: 50px;
+			border: 1px solid #eee;
+			background: #fff;
+			float: left;
+			text-align: center;
+			line-height: 40px;
+			cursor: pointer;
+		}
+
+		#todoApp .todo-items{
+			padding: 10px;
+			margin-top: -1px;
+			box-sizing: border-box;
+			border: 1px solid #eee;
+		}
+
+		#todoApp .todo-items li{
+			line-height: 25px;
+			margin-left: 20px;
+			border-bottom: 1px solid #eee;
+		}
+
+		#todoApp .footer{
+			padding: 5px 10px;
+			margin-top: -1px;
+			box-sizing: border-box;
+			border: 1px solid #eee;
+			font-size: 12px;
+			color: #444;
+		}
+    </style>
 </head>
+
 <body>
-	
+    <div id="todoApp">
+        <div c-controller="todoCtrl">
+            <div class="title">
+                <h2>Todos</h2>
+            </div>
+            <div class="content">
+                <div class="todo-form">
+                    <input type="text" c-model="todo" placeholder="Todos...">
+                    <button type="button" c-click="add()">add</button>
+                </div>
+                <div class="todo-items">
+                    <ul>
+                        <li c-repeat="todo in todos">
+                            {{ todo }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer">
+            	<p>
+            		left Items: <span c-bind='leftItems::number'>0</span>
+            	</p>
+            </div>
+        </div>
+    </div>
+    <script src="./con.js"></script>
+    <script>
+    var todoApp = con('#todoApp');
+
+    console.log('todoApp', todoApp);
+    todoApp.controller('todoCtrl', function(ctx){
+    	ctx.$data({
+    		todos: [],
+    		add: function(){
+    			ctx.todos.push(ctx.$eval('todo'));
+    			ctx.$digest();
+    		}
+    	});
+    	ctx.$set('leftItems::number', 0);
+    	ctx.$watch('todos', function(items){
+    		ctx.$set('leftItems::number', items.length);
+    	})
+    	console.log('todoapp ctx', ctx);
+    })
+    todoApp.init();
+    	console.log('todoApp ctx', todoApp.$globalCtx);
+    </script>
 </body>
+
 </html>
