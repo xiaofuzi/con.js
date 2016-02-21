@@ -1,0 +1,26 @@
+{
+  "name": "con.js",
+  "version": "0.0.1",
+  "description": "a simple mvvm framework",
+  "main": "con.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xiaofuzi/con.js.git"
+  },
+  "keywords": [
+    "mvvm"
+  ],
+  "author": "yangxiaofu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xiaofuzi/con.js/issues"
+  },
+  "homepage": "https://github.com/xiaofuzi/con.js"
+}

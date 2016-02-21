@@ -52,6 +52,8 @@ Core.prototype.action = function(name, fn){
 Core.prototype.context = function(obj){
 	if(obj){
 		utils.extends(this.context, obj);
+	}else{
+		return this.context;
 	}
 }
 
@@ -90,20 +92,33 @@ Core.prototype.parseText = function(text, data){
 	return utils.parseParenthesis(text, data);
 }
 
+/*
+* 插件机制
+*/
+
+Core.prototype.use = function(fn){
+	fn(this);
+}
+
 module.exports = function(el){
 	var app = new Core(el);
 
-	var c_model = require('./directives/c-model');
-	var c_bind = require('./directives/c-bind');
-	var c_controller = require('./directives/c-controller');
-	var c_click = require('./directives/c-click');
-	var c_repeat = require('./directives/c-repeat');
+	app.use(function(app){
+		require('./directives/c-model')(app);
+	});
+	app.use(function(app){
+		require('./directives/c-bind')(app);
+	});
+	app.use(function(app){
+		require('./directives/c-click')(app);
+	});
+	app.use(function(app){
+		require('./directives/c-controller')(app);
+	});
+	app.use(function(app){
+		require('./directives/c-repeat')(app);
+	});
 
-	c_model(app);
-	c_bind(app);
-	c_controller(app);
-	c_click(app);
-	c_repeat(app);
 	return app;
 }
 
@@ -415,6 +430,14 @@ var utils = {
             }
         }
         return out;
+    },
+    //dom selector
+    dom: function(selector){
+        if(selector.nodeType && (selector.nodeType == 1 || selector.nodeType == 9)){
+            return selector;
+        }else{
+            return document.querySelector(selector);
+        }
     }
 };
 
