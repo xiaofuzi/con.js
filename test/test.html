@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="container">
+        <div c-controller="todoCtrl">
+            <input type="text" c-model="todo">
+            <p c-bind="todo"></p>
+            <button c-click="add()">add</button>
+            <ul>
+                <li c-repeat="todo in todos">
+                    {{ todo }};
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="./Con.js"></script>
+    <script>
+    var container = document.getElementById('container');
+    var conApp = con(container);
+
+
+    conApp.controller('todoCtrl', function(ctx){
+    	ctx.$data({
+    		todos: [],
+            add: function(){
+                ctx.todos.push(ctx.$eval('todo'));
+                console.log(ctx.todos);
+            }
+    	})
+        ctx.$watch('todos', function(val) {
+                    console.log('todoCtrl:', val);
+                })
+    })
+    conApp.init();
+    </script>
+</body>
+
+</html>
